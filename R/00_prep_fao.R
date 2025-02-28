@@ -69,6 +69,10 @@ read_method[c("trad", "btd_prod")] <- "read_csv"
 
 # Execute -----------------------------------------------------------------
 
+if (!dir.exists(path_fao)) {
+  dir.create(path_fao, recursive = TRUE)
+}
+
 fa_dl(file = files, link = links, path = path_fao)
 
 
