@@ -81,8 +81,12 @@ fa_extract <- function(
       }
       # if(file.info(zip[i])$size > 200000000) {
         csv[i] <- paste0(path_out, ifelse(!is.na(extr[i]), extr[i], sub("zip", "csv", zip[i])))
-        if(grepl("\\(|\\)", zip[i])) file.rename(zip[i], gsub("\\(|\\)", "", zip[i]))
-        decompress_file(path_out, gsub("\\(|\\)", "", files[i]))
+        # first escape parentheses, e.g. from "()" to "\(\)"
+        # "\\(" is a parenthesis and "\\" a backslash
+        files[i] |>
+          gsub("\\(", "\\\\(", x = _) |>
+          gsub("\\)", "\\\\)", x = _) |>
+          decompress_file(path_out, file = _)
       # } else { csv[i] <- unzip(zip[i], extr[i], exdir = gsub("(.*)/", "\\1", path_out)) }
     }
   }
