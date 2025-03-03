@@ -81,31 +81,36 @@ fa_extract <- function(
       }
       # if(file.info(zip[i])$size > 200000000) {
         csv[i] <- paste0(path_out, ifelse(!is.na(extr[i]), extr[i], sub("zip", "csv", zip[i])))
-        # first escape parentheses, e.g. from "()" to "\(\)"
-        # "\\(" is a parenthesis and "\\" a backslash
-        files[i] |>
-          gsub("\\(", "\\\\(", x = _) |>
-          gsub("\\)", "\\\\)", x = _) |>
-          decompress_file(path_out, file = _)
+        if (!file.exists(csv[i])) {
+          # first escape parentheses, e.g. from "()" to "\(\)"
+          # "\\(" is a parenthesis and "\\" a backslash
+          files[i] |>
+            gsub("\\(", "\\\\(", x = _) |>
+            gsub("\\)", "\\\\)", x = _) |>
+            decompress_file(path_out, file = _)
+        }
       # } else { csv[i] <- unzip(zip[i], extr[i], exdir = gsub("(.*)/", "\\1", path_out)) }
     }
   }
 
   rds <- vector("list", length(csv))
+  gc()
   for(i in seq_along(csv)) {
     cat("Reading:", csv[i], "\n")
     if(is.null(read_method) || read_method[i] == "fread") {
-      rds[[i]] <- data.table::fread(csv[i], colClasses = col_types[[i]])
+      table <- data.table::fread(csv[i], colClasses = col_types[[i]])
     } else if (read_method[i] == "read_csv") {
-      rds[[i]] <- as.data.table(readr::read_csv(csv[i]))
+      table <- as.data.table(readr::read_csv(csv[i]))
     } else {stop("Wrong read_method specified for", csv[i], ". Must be either 'fread' or 'read_csv'. If read_method is NULL, fread is used by default. \n")}
+
+    saveRDS(table, dest_rds[i])
+    gc()
   }
 
+  # TODO: fix to use readRDS
   if(stack) {
     if(v) cat("Stacking CSV files via data.table::rbindlist()")
     saveRDS(data.table::rbindlist(rds), dest_rds)
-  } else {
-    for(i in seq_along(csv)) saveRDS(rds[[i]], dest_rds[i])
   }
 
   if(rm) file.remove(csv)
