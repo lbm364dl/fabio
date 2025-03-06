@@ -23,8 +23,10 @@ fa_dl <- function(
 
   out <- vector("integer", length(file))
   for(i in seq_along(file)) {
+    print(dest[i])
     if(!file.exists(dest[i])) {
       out[i] <- download.file(dl[i], dest[i], method = "auto")
+      print(out[i])
     } else if(v) cat("Skipping download, already found:", file[i], "\n")
   }
 
@@ -64,10 +66,12 @@ fa_dl <- function(
 fa_extract <- function(
   path_in, files, path_out, name, extr = NULL,
   col_types = NULL, stack = FALSE, read_method = NULL,
-  rm = TRUE, v = TRUE, ...) {
+  rm = TRUE, v = TRUE, force_reextraction = TRUE, ...) {
 
   zip = paste0(path_in, files)
   dest_rds <- paste0(path_out, name, ".rds")
+  print("dest_rds")
+  print(dest_rds)
 
   if(length(zip) == 1 && length(extr) > 1 || is.null(extr)) {
     if(v) cat("Extracting multiple files from a single ZIP archive\n")
@@ -95,22 +99,40 @@ fa_extract <- function(
 
   rds <- vector("list", length(csv))
   gc()
+  print("csvssss")
+  print(csv)
   for(i in seq_along(csv)) {
     cat("Reading:", csv[i], "\n")
+    print(read_method[i])
+    print(name[i])
     if(is.null(read_method) || read_method[i] == "fread") {
       table <- data.table::fread(csv[i], colClasses = col_types[[i]])
     } else if (read_method[i] == "read_csv") {
       table <- as.data.table(readr::read_csv(csv[i]))
     } else {stop("Wrong read_method specified for", csv[i], ". Must be either 'fread' or 'read_csv'. If read_method is NULL, fread is used by default. \n")}
 
-    saveRDS(table, dest_rds[i])
+    print("table")
+    print(table)
+    print("dest_rds[i]")
+    print(dest_rds[i])
+    if (stack) {
+      rds[[i]] <- table
+    } else {
+      if (force_reextraction || !file.exists(dest_rds[i])) {
+        saveRDS(table, dest_rds[i])
+      }
+    }
     gc()
   }
 
   # TODO: fix to use readRDS
   if(stack) {
     if(v) cat("Stacking CSV files via data.table::rbindlist()")
-    saveRDS(data.table::rbindlist(rds), dest_rds)
+    if (force_reextraction || !file.exists(dest_rds)) {
+      print("before saverds")
+      saveRDS(data.table::rbindlist(rds), dest_rds)
+      print("after saverds")
+    }
   }
 
   if(rm) file.remove(csv)

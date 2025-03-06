@@ -44,11 +44,11 @@ col_types <- list(
   "prod" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
              "character", "numeric", "numeric", "character", "numeric", "character", "character"),
   "trad" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
-             "character", "numeric", "numeric", "character", "numeric", "character"),
+             "character", "numeric", "numeric", "character", "numeric", "character", "character", "character"),
   "btd_prod" = c("numeric", "character", "character", "numeric", "character", "character", "numeric", "character", "character",
                  "numeric", "character", "numeric", "numeric", "character", "numeric", "character"),
   "cbs_food_new" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
-                     "character", "numeric", "numeric", "character", "numeric", "character"),
+                     "character", "numeric", "numeric", "character", "numeric", "character", "character"),
   "cbs_food_old" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
                      "character", "numeric", "numeric", "character", "numeric", "character"),
   "cbs_nonfood_old"  = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
@@ -56,11 +56,12 @@ col_types <- list(
   "cbs_nonfood_new"  = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
                          "character", "numeric", "numeric", "character", "numeric", "character", "character"),
   "sua" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
-            "character", "numeric", "numeric", "character", "numeric", "character"),
+            "character", "numeric", "numeric", "character", "numeric", "character", "character"),
   "prices" = c("numeric", "character", "character", "numeric", "character", "character", "numeric",
                "character", "numeric", "numeric", "numeric", "character", "character", "numeric", "character"),
-  "fish_prod" = c("integer", "character", "integer", "character", "character", "integer", "numeric", "NULL")
+  "fish_prod" = c("integer", "character", "integer", "character", "character", "integer", "numeric", "character")
 )
+# col_types <- lapply(col_types, function(x) c(x, "NULL"))
 
 # update: add read_method as there are some issues in the trad csv file (probably a missing quote somewhere) that fread cannot deal with, but readr::read_csv can.
 read_method = files
