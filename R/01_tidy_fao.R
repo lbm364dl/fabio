@@ -212,7 +212,11 @@ cbs[, item := ifelse(item_code==2605,	"Vegetables, Other",
 # TODO: this needs to be improved in the future (i.e. by using SUA or contacting FAO to correct data)
 
 # Store
-saveRDS(cbs, "data/tidy/cbs_tidy.rds")
+data_tidy_path <- "data/tidy/"
+if (!dir.exists(data_tidy_path)) {
+  dir.create(data_tidy_path, recursive = TRUE)
+}
+saveRDS(cbs, paste0(data_tidy_path, "cbs_tidy.rds"))
 
 
 # SUA ---------------------------------------------------------------------
