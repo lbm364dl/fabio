@@ -17,7 +17,7 @@ rename_comtrade <- c(
   "qty_unit_abbr" = "unit",
   "qty" = "value",
   # "netweight_kg" = "net_weight",
-  "trade_value_usd" = "usd"
+  "primary_value" = "usd"
 )
 
 rename_baci <- c(
