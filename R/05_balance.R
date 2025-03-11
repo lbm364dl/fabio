@@ -6,6 +6,7 @@ library("mipfp")
 source("R/01_tidy_functions.R")
 
 years <- 1986:2021
+years <- c(2014)
 
 
 # BTD ---------------------------------------------------------------------
@@ -107,10 +108,17 @@ for(i in seq_along(years)) {
     lapply(function(x) as(x[, -"from_code"], "matrix"))
 
   # Run iterative proportional fitting per item
-  for(j in as.character(items)) {
+  # for(j in as.character(items)) {
+  for(j in c("2520")) {
+    print(stringr::str_glue("iterating item {j}..."))
+    my_constraints <- as.matrix(constraint[item_code == j, .(round(exports), round(imports))])
+    browser()
     mapping_ras[[j]] <- Ipfp(mapping_ras[[j]],
-      target.list = list(1, 2), iter = 100, tol.margins = 1E5,
-      target.data = constraint[item_code == j, .(round(exports), round(imports))])$x.hat
+      target.list = list(1, 2), iter = 100, tol=1E5, tol.margins = 1E5,
+      # target.data = asplit(my_constraints, MARGIN = 2)
+      target.data = list(my_constraints[,1], my_constraints[,2])
+      # target.data = constraint[item_code == j, .(round(exports), round(imports))]
+    )$x.hat
   }
 
   btd_bal[[i]] <- lapply(names(mapping_ras), function(name) {
