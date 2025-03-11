@@ -21,6 +21,8 @@ eth_eia <- dt_filter(eth_eia, !is.na(area))
 eth_eia <- melt(eth_eia, id.vars = c("area", "area_code"),
   variable.name = "year", value.name = "value_eia", variable.factor = FALSE)
 
+eth_eia[, year := as.integer(year)]
+
 eth_eia <- area_merge(eth_eia, orig = 62, dest = 238, pattern = "Ethiopia")
 
 cat("Converting from 1000 barrels/day to tonnes/year",
