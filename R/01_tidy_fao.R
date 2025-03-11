@@ -46,6 +46,7 @@ rename <- c(
   # "1000 US$" = "k_usd",
   # "1000 Head" = "k_capita",
   "Head" = "head",
+  "An" = "head",
   "tonnes" = "tonnes",
   "Export" = "exports",
   "Import" = "imports",
@@ -356,8 +357,8 @@ btd <- btd[, list(value = na_sum(value)), by = .(reporter_code, reporter,
 cat("Aggregation from", length(item_match), "to", nrow(btd), "observations.\n")
 
 # Recode "1000 Head" to "head"
-btd[unit == "1000 Head", `:=`(value = value * 1000, unit = "Head")]
-btd[unit == "Head", `:=`(unit = "head")]
+btd[unit == "1000 An", `:=`(value = value * 1000, unit = "An")]
+btd[unit == "An", `:=`(unit = "head")]
 # Recode "1000 US$" to "usd"
 btd[unit == "1000 US$", `:=`(value = value * 1000, unit = "usd")]
 
