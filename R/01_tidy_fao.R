@@ -105,6 +105,7 @@ cbs_nonfood <- cbs_nonfood[,`:=` (Value.food_old = NULL, Value.food_new = NULL )
 
 # bind
 cbs <- rbind(cbs_food_old, cbs_food_new, cbs_nonfood, fill=TRUE)
+
 cbs <- dt_rename(cbs, rename, drop = TRUE)
 rm(cbs_nonfood_old, cbs_nonfood_new, cbs_nonfood, cbs_food_old, cbs_food_new)
 
@@ -147,6 +148,10 @@ cbs <- area_kick(cbs, code = 351, pattern = "China", groups = TRUE)
 cbs <- area_merge(cbs, orig = 62, dest = 238, pattern = "Ethiopia")
 cbs <- area_merge(cbs, orig = 206, dest = 276, pattern = "Sudan")
 cbs <- area_fix(cbs, regions)
+
+# Standardize both names to 'Quantity'
+cbs[element == "Export quantity", element := "Export Quantity"]
+cbs[element == "Import quantity", element := "Import Quantity"]
 
 # Widen by element
 cbs <- data.table::dcast(cbs, area_code + area + item_code + item + year ~ element,
