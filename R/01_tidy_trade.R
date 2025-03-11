@@ -8,13 +8,13 @@ regions <- fread("inst/regions_full.csv")
 # Colnames ----------------------------------------------------------------
 
 rename_comtrade <- c(
-  "year" = "year",
-  "trade_flow" = "element",
+  "ref_year" = "year",
+  "flow_desc" = "element",
   "reporter_iso" = "reporter",
   "partner_iso" = "partner",
-  "commodity_code" = "item_code",
-  "commodity" = "item",
-  "qty_unit" = "unit",
+  "cmd_code" = "item_code",
+  "cmd_desc" = "item",
+  "qty_unit_abbr" = "unit",
   "qty" = "value",
   # "netweight_kg" = "net_weight",
   "trade_value_usd" = "usd"
