@@ -479,8 +479,8 @@ prod_extr <- as.data.table(reshape::expand.grid.df(prod_rel, data.table(year = 2
 prod_extr <- prod_extr[paste0(area_code,"_",year) %in% unique(paste0(cbs$area_code,"_",cbs$year)),]
 # step 2: extrapolate missing values
 prod <- merge(prod, prod_extr, by = names(prod_extr), all = TRUE)
-prod[, value_interp := forecast::na.interp(value),
-     by=.(area,item,element,unit)]
+prod[, value_interp := tryCatch(forecast::na.interp(value),error=function(e) NA), 
+  by=.(area,item,element,unit)]
 prod[is.na(value), value := value_interp]
 prod[,value_interp := NULL]
 
