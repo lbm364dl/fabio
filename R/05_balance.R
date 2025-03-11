@@ -100,12 +100,11 @@ for(i in seq_along(years)) {
 
 
   # Restructure in a list with matrices per item
-  mapping_ras <- lapply(
-    split(mapping, by = "item_code", keep.by = FALSE),
-    function(x) {
-      out <- data.table::dcast(x, from_code ~ to_code,
-        fun.aggregate = sum, value.var = "value")[, -"from_code"]
-      as(out, "matrix")})
+  mapping_ras <-
+    mapping |>
+    data.table::dcast(from_code + item_code ~ to_code, value.var = "value") |>
+    split(by = "item_code", keep.by = FALSE) |>
+    lapply(function(x) as(x[, -"from_code"], "matrix"))
 
   # Run iterative proportional fitting per item
   for(j in as.character(items)) {
