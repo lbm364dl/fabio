@@ -10,15 +10,15 @@ path_eth <- "input/ethanol/"
 
 # EIA data ----------------------------------------------------------------
 
-eth1_extent <- 1980:2019
+eth1_extent <- 1980:2021
 eth1_cols <- c("NULL", "character", rep("character", length(eth1_extent)))
 
 if (!dir.exists(path_eth)) {
   dir.create(path_eth, recursive = TRUE)
 }
 
-eth1_prod <- fread(paste0(path_eth, "eia_biofuels_production_19.csv"),
-                   skip = 3, check.names = FALSE, nrows = 230,
+eth1_prod <- fread(paste0(path_eth, "eia_biofuels_production_21.csv"),
+                   skip = 4, check.names = FALSE, nrows = 230,
                    colClasses = eth1_cols, na.strings = c("-", "--", "", "NA"))
 
 names(eth1_prod) <- c("country", eth1_extent)
