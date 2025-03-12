@@ -22,7 +22,8 @@ download <- function(url, destdir, alias, extension) {
 
 # Select codes for fish (30___) and ethanol (2207__)
 filter_fish_and_ethanol <- function(destfile, ...) {
-  baci_sel <- data.table::fread(destfile)
+  print(stringr::str_glue("Reading {destfile}..."))
+  baci_sel <- data.table::fread(destfile, stringsAsFactors = TRUE)
   baci_sel[grep("^(30[1-5]..|2207..)", baci_sel$k), ]
 }
 
@@ -38,7 +39,13 @@ save_baci_rds <- function(input_files, k_path_trade, k_baci_group) {
     saveRDS(baci_rds_path)
 }
 
-save_rds <- function(destfile, destdir, alias, extension, ...) {
+save_rds <- function(destfile, destdir, alias, extension, drop_cols, ...) {
+  if (!is.na(drop_cols)) {
+    drop_cols <- stringr::str_split_1(drop_cols, ",")
+  } else {
+    drop_cols <- c()
+  }
+
   rds_destfile <- stringr::str_glue("{destdir}/{alias}.rds")
   if (file.exists(rds_destfile)) {
     return(rds_destfile)
@@ -50,7 +57,7 @@ save_rds <- function(destfile, destdir, alias, extension, ...) {
         openxlsx::read.xlsx() |>
         data.table::as.data.table()
     } else {
-      data.table::fread(destfile)
+      data.table::fread(destfile, stringsAsFactors = TRUE, drop = drop_cols)
     }
 
   saveRDS(table, rds_destfile, compress = FALSE)
