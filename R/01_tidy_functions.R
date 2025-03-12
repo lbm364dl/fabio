@@ -228,18 +228,26 @@ flow_pref <- function(x, pref = "Import", pure = FALSE) {
 }
 
 
-# Recursive sum over vectors with NA, returns NA if all values are NA
-na_sum <- function(..., rowwise = TRUE) {
-  dots <- list(...)
-  if(length(dots) == 1) { # Base
-    ifelse(all(is.na(dots[[1]])), NA_real_, sum(dots[[1]], na.rm = TRUE))
-  } else { # Recurse
-    if(rowwise) {
-      x <- do.call(cbind, dots)
-      return(apply(x, 1, na_sum))
-    }
-    return(na_sum(vapply(dots, na_sum, double(1L))))
+# Receives vectors, creates matrix with them as columns
+# Performs rowwise sum, returns NA if all row values are NA
+# If only one input vector, perform sum on it
+na_sum <- function(...) {
+  mat <- cbind(...)
+  cols <- dim(mat)[2]
+  if (cols == 1) {
+    mat <- t(mat)
+    cols <- dim(mat)[2]
   }
+
+  is_all_row_na <-
+    mat |>
+    is.na() |>
+    rowSums(na.rm = TRUE) |>
+    (`==`)(cols)
+
+  mat |>
+    rowSums(na.rm = TRUE) |>
+    ifelse(is_all_row_na, yes = NA, no = _)
 }
 
 
