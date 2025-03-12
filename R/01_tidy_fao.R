@@ -135,12 +135,13 @@ cbs <- cbs[! element %in% c("Food supply (kcal/capita/day)",
                             "Protein supply quantity (t)",
                             "Food supply (kcal)",
                             "Total Population - Both sexes")]
-cbs[, element := ifelse(element=="Processed", "Processing", element)]
+
+cbs[element == "Processed", element := "Processing"]
 
 # fix error: wrong units for stock changes
 cbs[element=="Stock Variation" & unit=="1000 An", unit := "1000 t"]
 # change units to tonnes
-cbs[, unit := ifelse(unit=="t", "tonnes", unit)]
+cbs[unit == "t", unit := "tonnes"]
 cbs[unit=="1000 t", `:=`(unit="tonnes", value=value*1000)]
 
 # Country / Area adjustments
@@ -206,8 +207,8 @@ cat("Found ", cbs[stock_addition > total_supply, .N],
 #          balancing = ifelse(stock_addition + balancing < 0, balancing + stock_addition, 0))]
 
 # rename 2 items in order to have identical name throughout the FAOSTAT data domains
-cbs[, item := ifelse(item_code==2605,	"Vegetables, Other",
-                     ifelse(item_code==2625, "Fruits, Other", item))]
+cbs[item_code == 2605, item := "Vegetables, Other"]
+cbs[item_code == 2625, item := "Fruits, Other"]
 
 # quick-fix for cocoa data error:
 # NOTE: this is postponed now to a later point (use), where all un-allocated processing use (i.e. when a supply chain is not further traced in FABIO) are put into a new final demand category
@@ -512,7 +513,7 @@ crop_trad <- area_fix(crop_trad, regions)
 crop <- rbind(crop, crop_trad)
 
 # change 't' to 'tonnes'
-crop[, unit := ifelse(unit=="t", "tonnes", unit)]
+crop[unit == "t", unit := "tonnes"]
 
 # save before converting into primary equivalents
 saveRDS(crop, "data/tidy/crop_full.rds")
