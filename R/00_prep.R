@@ -7,7 +7,7 @@ download <- function(url, destdir, alias, extension) {
   }
   dir.create(destdir, recursive = TRUE)
 
-  path <- tryCatch(
+  tryCatch(
     download.file(url, destfile, mode = "wb", method = "curl"),
     error = function(cond) {
       if (file.exists(destfile)) {
@@ -16,8 +16,8 @@ download <- function(url, destdir, alias, extension) {
       stop("File was not downloaded correctly. Try again.")
     }
   )
-  print(path)
-  path
+  print(destfile)
+  destfile
 }
 
 # Select codes for fish (30___) and ethanol (2207__)
@@ -61,6 +61,7 @@ save_rds <- function(destfile, destdir, alias, extension, drop_cols, ...) {
     }
 
   saveRDS(table, rds_destfile, compress = FALSE)
+  rds_destfile
 }
 
 options(timeout = 1e6)
