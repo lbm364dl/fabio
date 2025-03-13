@@ -2,7 +2,7 @@
 library("data.table")
 source("R/01_tidy_functions.R")
 
-regions <- fread("inst/regions_full.csv")
+regions <- fread("inst/regions_full.csv", stringsAsFactors = TRUE)
 
 
 # Colnames ----------------------------------------------------------------

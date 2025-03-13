@@ -2,7 +2,7 @@
 library("data.table")
 source("R/01_tidy_functions.R")
 
-regions <- fread("inst/regions_full.csv")
+regions <- fread("inst/regions_full.csv", stringsAsFactors = TRUE)
 
 
 # Colnames ----------------------------------------------------------------
@@ -343,14 +343,14 @@ btd <- dt_filter(btd, value >= 0)
 btd[, imex := factor(gsub("^(Import|Export) (.*)$", "\\1", element))]
 
 # Apply TCF to observations with 'unit' == "tonnes"
-btd <- merge(btd, fread("inst/tcf_btd.csv"),
+btd <- merge(btd, fread("inst/tcf_btd.csv", stringsAsFactors = TRUE),
              by = "item_code", all.x = TRUE)
 cat("Applying TCF to trade data, where `unit == 'tonnes'` applies.\n")
 btd[unit != "tonnes", tcf := 1]
 btd <- tcf_apply(btd, na.rm = FALSE, filler = 1, fun = `/`)
 
 # Aggregate to CBS items
-btd_conc <- fread("inst/conc_btd-cbs.csv")
+btd_conc <- fread("inst/conc_btd-cbs.csv", stringsAsFactors = TRUE)
 
 cat("Aggregating BTD items to the level of CBS.\n")
 item_match <- match(btd[["item_code"]], btd_conc[["btd_item_code"]])
@@ -464,7 +464,7 @@ rm(btd, btd_conc, item_match)
 
 cat("\nTidying crops.\n")
 
-crop_conc <- fread("inst/conc_crop-cbs.csv")
+crop_conc <- fread("inst/conc_crop-cbs.csv", stringsAsFactors = TRUE)
 
 
 # Production
@@ -534,12 +534,12 @@ crop <- dt_filter(crop, value >= 0)
 #crop_prim <- readRDS("input/fao/crop_prim.rds")
 crop_prim <- readRDS("input/fao/crop_prim_14.rds")
 crop_prim_19 <- readRDS("input/fao/crop_prim_19.rds")
-crop_conc <- fread("inst/conc_crop-cbs.csv")
+crop_conc <- fread("inst/conc_crop-cbs.csv", stringsAsFactors = TRUE)
 
 # bring new fodder data in same format as old one (different code nomenclatures are used)
-m49_codes <- fread("inst/m49_codes.csv")
+m49_codes <- fread("inst/m49_codes.csv", stringsAsFactors = TRUE)
 setnames(m49_codes, c("M49 Code", "ISO-alpha3 Code"), c("m49", "iso3c"))
-cpc_codes_fodder <- fread("inst/cpc_fcl_fodder.csv")
+cpc_codes_fodder <- fread("inst/cpc_fcl_fodder.csv", stringsAsFactors = TRUE)
 crop_prim_19[, `:=`(m49 = as.integer(geographicAreaM49), cpc = as.numeric(measuredItemCPC))]
 crop_prim_19 <- merge(crop_prim_19, m49_codes[,.(m49, iso3c)], by = "m49")
 crop_prim_19 <- merge(crop_prim_19, regions[,.(code, iso3c, name)], by = "iso3c")
@@ -604,7 +604,7 @@ rm(crop, crop_prim, crop_conc, cbs)
 
 cat("\nTidying livestocks.\n")
 
-live_conc <- fread("inst/conc_live-cbs.csv")
+live_conc <- fread("inst/conc_live-cbs.csv", stringsAsFactors = TRUE)
 
 # aggregate chickens, turkeys, etc. into poultry
 live <- prod[item_code %in% live_conc$live_item_code, ]
@@ -650,7 +650,7 @@ rm(live, live_conc)
 
 cat("\nTidying prices.\n")
 
-crop_conc <- fread("inst/conc_crop-cbs.csv")
+crop_conc <- fread("inst/conc_crop-cbs.csv", stringsAsFactors = TRUE)
 
 prices <- readRDS("input/fao/prices.rds")
 prices <- dt_rename(prices, rename, drop = TRUE)

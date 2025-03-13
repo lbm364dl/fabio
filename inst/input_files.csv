@@ -41,3 +41,4 @@ csv,baci,input/trade,BACI_HS92_Y2021,https://saco.csic.es/public.php/dav/files/n
 csv,baci,input/trade,BACI_HS92_Y2022,https://saco.csic.es/public.php/dav/files/nrJ3JGPZyZeQMW8/Sources%20%28proposed%20by%20alvaro%29/Model%20inputs/FABIO/trade/baci_hs92/BACI_HS92_Y2022_V202501.csv,
 csv,baci,input/trade,BACI_HS92_Y2023,https://saco.csic.es/public.php/dav/files/nrJ3JGPZyZeQMW8/Sources%20%28proposed%20by%20alvaro%29/Model%20inputs/FABIO/trade/baci_hs92/BACI_HS92_Y2023_V202501.csv,
 csv,fao,input/fao,btd_prod,https://saco.csic.es/public.php/dav/files/nrJ3JGPZyZeQMW8/Sources%20%28proposed%20by%20alvaro%29/Model%20inputs/FABIO/fao/Trade_DetailedTradeMatrix_E_All_Data_(Normalized).csv,"Reporter Country Code (M49),Partner Country Code (M49),Item Code (CPC),Year Code,Element Code,Flag"
+csv,ethanol,input/ethanol,eth_eia,https://saco.csic.es/public.php/dav/files/nrJ3JGPZyZeQMW8/Sources%20%28proposed%20by%20alvaro%29/Model%20inputs/FABIO/ethanol/eia_biofuels_production.csv,

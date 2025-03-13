@@ -57,7 +57,12 @@ save_rds <- function(destfile, destdir, alias, extension, drop_cols, ...) {
         openxlsx::read.xlsx() |>
         data.table::as.data.table()
     } else {
-      data.table::fread(destfile, stringsAsFactors = TRUE, drop = drop_cols)
+      data.table::fread(
+        destfile,
+        stringsAsFactors = TRUE,
+        drop = drop_cols,
+        header = TRUE
+      )
     }
 
   saveRDS(table, rds_destfile, compress = FALSE)

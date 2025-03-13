@@ -247,7 +247,7 @@ na_sum <- function(...) {
 
   mat |>
     rowSums(na.rm = TRUE) |>
-    ifelse(is_all_row_na, yes = NA, no = _)
+    ifelse(is_all_row_na, yes = NA_real_, no = _)
 }
 
 
