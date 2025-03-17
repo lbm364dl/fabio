@@ -31,4 +31,4 @@ btd[unit == "An", `:=`(unit = "head")]
 btd[unit == "1000 USD", `:=`(value = value * 1000, unit = "usd")]
 
 # Store
-saveRDS(btd, "data/tidy/btd_tidy.rds")
+saveRDS(btd, "data/btd_full.rds")

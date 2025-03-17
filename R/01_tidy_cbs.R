@@ -17,7 +17,12 @@ rename <- c(
   "Food" = "food",
   "Stock Variation" = "stock_withdrawal",
   "Residuals" = "residuals",
-  "Tourist consumption" = "tourist"
+  "Tourist consumption" = "tourist",
+  "area_code" = "area_code",
+  "area" = "area",
+  "item_code" = "item_code",
+  "item" = "item",
+  "year" = "year"
 )
 
 # CBS ---------------------------------------------------------------------
@@ -121,8 +126,8 @@ cbs[
 cbs[, `:=`(corr = NULL, ratio = NULL)]
 
 # Store
-data_tidy_path <- "data/tidy/"
+data_tidy_path <- "data/"
 if (!dir.exists(data_tidy_path)) {
   dir.create(data_tidy_path, recursive = TRUE)
 }
-saveRDS(cbs, paste0(data_tidy_path, "cbs_tidy.rds"))
+saveRDS(cbs, paste0(data_tidy_path, "cbs_full.rds"))

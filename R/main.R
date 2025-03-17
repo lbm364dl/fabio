@@ -22,10 +22,11 @@
 source("R/00_prep.R")
 
 # Depends on outputs produced in step 0
-source("R/01_tidy_fao.R")
+# source("R/01_tidy_fao.R")
 # source("R/01_tidy_eth.R")
 # source("R/01_tidy_trade.R")
-source("R/01_tidy_btd")
+source("R/01_tidy_cbs.R")
+source("R/01_tidy_btd.R")
 
 # Build full BTD, integrating trade data
 source("R/02_build_btd.R")
